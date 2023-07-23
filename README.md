@@ -17,8 +17,10 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 ```bash
-# bulk data 
+# bulk data register user
 $ curl --location 'http://localhost:3000/api/user/bulk-data'
+
+# bulk data banner promotion
 $ curl --location 'http://localhost:3000/api/promotions/bulk-data'
 ```
 ## Stay in touch

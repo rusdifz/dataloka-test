@@ -18,7 +18,7 @@ $ npm run start:prod
 ```
 # bulk data 
 
-curl --location 'http://localhost:3000/api/user/bulk-data'
-curl --location 'http://localhost:3000/api/promotions/bulk-data'
+$ curl --location 'http://localhost:3000/api/user/bulk-data'
+$ curl --location 'http://localhost:3000/api/promotions/bulk-data'
 ## Stay in touch
 Author : Muhammad Fauzan Rusdi

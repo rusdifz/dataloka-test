@@ -68,7 +68,6 @@ export class PromotionController {
         return await this.service.DeletePromotion(promotion_id)
     }
 
-    @UseGuards(HeaderGuard)
     @UseInterceptors(ResponsePagination)
     @Get("/bulk-data")
     async BulkData(){

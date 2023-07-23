@@ -1,12 +1,9 @@
 ## Description
 This is  API promotion list for dataloka test
-
 ## Installation
-
 ```bash
 $ npm install
 ```
-
 ## Running the app
 
 ```bash
@@ -19,19 +16,9 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+# bulk data 
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
+curl --location 'http://localhost:3000/api/user/bulk-data'
+curl --location 'http://localhost:3000/api/promotions/bulk-data'
 ## Stay in touch
 Author : Muhammad Fauzan Rusdi

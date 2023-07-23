@@ -1,4 +1,4 @@
-import { Controller, Get, Query, Param, UseInterceptors, UseGuards, Headers } from "@nestjs/common";
+import { Controller, Get, Query, Param, UseInterceptors, UseGuards, Headers, Post, Put, Delete, Body } from "@nestjs/common";
 import { PromotionService } from './promotion.service';
 import { ResponseDetail, ResponsePagination } from "../../middleware/interceptor/response/success";
 import { HeaderGuard } from "../../middleware/guard/header.guard";
@@ -22,7 +22,7 @@ export class PromotionController {
 
     @UseGuards(HeaderGuard)
     @UseInterceptors(ResponseDetail)
-    @Get("/:promotion_id")
+    @Get("/detail/:promotion_id")
     async GetPromotionDetail(@Headers() headers: any, @Param('promotion_id') promotion_id: number){
         console.log('this');
         
@@ -33,6 +33,46 @@ export class PromotionController {
         }
 
         return await this.service.GetListPromotionDetail(data)
+    }
+
+    @UseGuards(HeaderGuard)
+    @UseInterceptors(ResponseDetail)
+    @Post("/")
+    async CreatePromotion(@Headers() headers: any, @Body() body: any){
+        
+        if(headers.user){
+            body.created_by = headers.user.username
+        }
+
+        return await this.service.CreatePromotion(body)
+    }
+
+    @UseGuards(HeaderGuard)
+    @UseInterceptors(ResponseDetail)
+    @Put("/:promotion_id")
+    async UpdatePromotion(@Headers() headers: any, @Body() body: any, @Param('promotion_id') promotion_id: number){
+        
+        body.id_banner_promosi = promotion_id
+
+        if(headers.user){
+            body.updated_by = headers.user.username
+        }
+
+        return await this.service.UpdatePromotion(body)
+    }
+
+    @UseGuards(HeaderGuard)
+    @UseInterceptors(ResponseDetail)
+    @Delete("/:promotion_id")
+    async DeletePromotion(@Headers() headers: any, @Param('promotion_id') promotion_id: number){
+        return await this.service.DeletePromotion(promotion_id)
+    }
+
+    @UseGuards(HeaderGuard)
+    @UseInterceptors(ResponsePagination)
+    @Get("/bulk-data")
+    async BulkData(){
+        return await this.service.BulkData()
     }
     
 }

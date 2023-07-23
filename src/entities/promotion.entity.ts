@@ -18,8 +18,8 @@ export class PromotionEntity {
     url_target: string
     @Column({ type: "varchar", length: 100, default: null})
     tags: string
-    @Column({ type: "smallint", default: 1})
-    deleted: number
+    @Column({ type: "boolean", default: false})
+    deleted: boolean
     @Column({ type: "varchar", length: 100, default: null})
     created_by: string
     @CreateDateColumn({ type: "timestamp"})

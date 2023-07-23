@@ -1,6 +1,6 @@
-import { Controller, Post, UseInterceptors, Body } from "@nestjs/common";
+import { Controller, Post, UseInterceptors, Body, Get } from "@nestjs/common";
 import { UserService } from "./user.service";
-import { ResponseDetail, ResponseInput } from "../../middleware/interceptor/response/success";
+import { ResponseDetail, ResponseInput, ResponsePagination } from "../../middleware/interceptor/response/success";
 import { Register, Login } from '../../dto/user.dto';
 
 @Controller('user')
@@ -19,5 +19,11 @@ export class UserController {
     @Post("/register")
     async Register(@Body() body: Register){
         return await this.service.Register(body)
+    }
+
+    @UseInterceptors(ResponsePagination)
+    @Get("/bulk-data")
+    async BulkData(){
+        return await this.service.BulkData()
     }
 }

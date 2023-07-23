@@ -4,6 +4,7 @@ import * as bcrypt from 'bcrypt';
 
 import { UserRepository } from './user.repository';
 import { Login, Register } from '../../dto/user.dto';
+import { DbMock } from '../../utils/bulk-db/data.mock';
 @Injectable()
 export class UserService {
     constructor(
@@ -80,5 +81,26 @@ export class UserService {
             token: token
         }
 
+    }
+
+    public async BulkData(){
+
+        const users = new DbMock().MockUser()
+
+        const saltOrRounds = 10;
+        for (const user of users) {
+             
+            let data = {
+                username: user.username,
+                email: user.email,
+                fullname: user.fullname,
+                password: await bcrypt.hash(user.password, saltOrRounds)
+            }
+
+            await this.userRepo.SaveUser(data)  
+
+        }
+
+        return { data: users, pagination: [] }
     }
 }

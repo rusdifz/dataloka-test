@@ -24,7 +24,7 @@ import {
             msg: 'success',
           },
           data: data,
-          error: '',
+          error: null,
         })),
       );
     }
@@ -54,7 +54,7 @@ import {
         map((data) => ({
           meta: this.setCode(data),
           data: data,
-          error: '',
+          error: null,
         })),
       );
     }
@@ -104,7 +104,7 @@ import {
           meta: this.setCode(data),
           data: this.getDataPage(data),
           pagination: this.getPage(data),
-          error: ''
+          error: null
         })),
       );
     }

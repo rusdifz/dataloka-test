@@ -1,7 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { Not } from 'typeorm';
+
 import { PromotionRepository } from './promotion.repository';
 import { RedisService } from '../../utils/redis/redis.service';
-
+import { CreatePromotion, UpdatePromotion } from "../../dto/promotion.dto";
+import { DbMock } from '../../utils/bulk-db/data.mock';
 @Injectable()
 export class PromotionService {
     constructor(
@@ -16,11 +19,11 @@ export class PromotionService {
         let data:any = []
         let pagination:any = {}
         let count:any = 0
-
+        
         const fromRedis = await this.redis.Get(`promotionlist-${query.filter}-${limit}-${offset}`)
-
+        
         if(fromRedis){
-            
+
             data = fromRedis.data
             pagination = fromRedis.pagination
 
@@ -48,7 +51,7 @@ export class PromotionService {
             }
 
         }
-
+        
         return {
             data: data,
             pagination: pagination
@@ -75,6 +78,57 @@ export class PromotionService {
 
         return {}
 
+    }
+
+    public async CreatePromotion(payload: CreatePromotion){
+
+        await this.ValidateData(payload, "create")
+
+        return await this.promoRepo.CreatePromotion(payload)
+
+    }
+
+    public async UpdatePromotion(payload: UpdatePromotion){
+        
+        await this.ValidateData(payload, "update")
+
+        return await this.promoRepo.UpdatePromotion(payload)
+
+    }
+
+    public async DeletePromotion(id: number){
+        return await this.promoRepo.DeletePromotion(id)
+    }
+
+    private async ValidateData(data: any, type: string){
+        
+        let where:any = {
+            judul_promosi: data.judul_promosi
+        }
+
+        if(type == "update"){
+            where.id_banner_promosi = Not(data.id_banner_promosi)
+        }
+        
+        const checkJudul = await this.promoRepo.CheckData({ where: where }) 
+            
+        if(checkJudul){
+            throw new HttpException("judul promosi sudah ada", HttpStatus.BAD_REQUEST);
+        }
+
+        return true
+    }
+
+    public async BulkData(){
+        console.log('bulk');
+        
+        const data = new DbMock().MockBannerPromotion()
+
+        // data.map(d =>{
+        //     this.promoRepo.CreatePromotion(d)
+        // })
+
+        return { data: data, pagination: [] }
     }
 
 }
